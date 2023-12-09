@@ -1,6 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flame_game_jam/game/game_main.dart';
+import 'package:flutter_flame_game_jam/game/my_game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,12 +40,19 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: child),
-            SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                ),
+                child: child,
+              ),
+            ),
+            const SizedBox(height: 20),
             FilledButton(
               onPressed: () {
                 setState(() {
@@ -56,25 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   } else {
                     setState(() {
-                      child = GameWidget(
-                        game: GameMain(),
-                        overlayBuilderMap: {
-                          'sliderOverlay':
-                              (BuildContext context, GameMain game) {
-                            return Slider(
-                              value: game.sliderValue,
-                              min: 0,
-                              max: 100,
-                              onChanged: (double newValue) {
-                                setState(() {
-                                  game.sliderValue = newValue;
-                                });
-                              },
-                            );
-                          },
-                        },
-                        initialActiveOverlays: ['sliderOverlay'],
-                      );
+                      child = GameWidget(game: MyGame());
                       gameIsRunning = true;
                     });
                   }
