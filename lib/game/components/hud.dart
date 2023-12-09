@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flame_game_jam/game/game_main.dart';
+import 'package:flutter_flame_game_jam/game/my_game.dart';
 
-class Hud extends PositionComponent with HasGameRef<GameMain> {
+class Hud extends PositionComponent with HasGameRef<MyGame> {
   Hud({
     super.position,
     super.size,
@@ -34,6 +34,6 @@ class Hud extends PositionComponent with HasGameRef<GameMain> {
 
   @override
   void update(double dt) {
-    _scoreTextComponent.text = game.sliderValue.toString();
+    _scoreTextComponent.text = 'Temperatur: ${game.sliderValue.toString()}';
   }
 }

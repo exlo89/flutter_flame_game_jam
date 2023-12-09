@@ -3,10 +3,9 @@ import 'package:flame/cache.dart';
 import 'package:flame/components.dart' as comp;
 import 'package:flame/events.dart';
 import 'package:flame/input.dart';
-import 'package:flutter_flame_game_jam/game/game_main.dart';
+import 'package:flutter_flame_game_jam/game/my_game.dart';
 
-class HotColdButton extends SpriteButtonComponent with comp.HasGameRef<GameMain> {
-  final imagesLoader = Images();
+class HotColdButton extends SpriteButtonComponent with comp.HasGameRef<MyGame> {
   late comp.Sprite hotButtonIsPressed;
   late comp.Sprite hotButton;
   late comp.Sprite coldButtonIsPressed;
@@ -24,12 +23,10 @@ class HotColdButton extends SpriteButtonComponent with comp.HasGameRef<GameMain>
     position = Vector2(game.size.x / 2, game.size.y - 60);
     button = await game.loadSprite('button/blue_button_default.png');
     buttonDown = await game.loadSprite('button/blue_button_pressed.png');
-    // TODO: implement onLoad
   }
 
   @override
   Future<void> onTapDown(TapDownEvent _) async {
-    // TODO: implement onTapDown
     super.onTapDown(_);
     print(game.tempState);
 

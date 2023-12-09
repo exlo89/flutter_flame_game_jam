@@ -6,61 +6,52 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_flame_game_jam/game/components/background.dart';
+import 'package:flutter_flame_game_jam/game/components/hot_cold_button.dart';
+import 'package:flutter_flame_game_jam/game/components/hud.dart';
 import 'package:flutter_flame_game_jam/game/components/ice_rock.dart';
 import 'package:flutter_flame_game_jam/game/components/player.dart';
 
-class MyGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
+enum TemperatureState { isIncreasing, isDecreasing }
+
+class MyGame extends FlameGame with HasCollisionDetection {
   MyGame()
       : super(
           children: [
             Background(),
+            IceRockSpawner(),
+            HotColdButton(),
+            Hud(),
           ],
         );
 
   double sliderValue = 0;
 
+  TemperatureState tempState = TemperatureState.isIncreasing;
+  Timer heatProgressTimer = Timer(0.1, repeat: true, autoStart: false);
+
   @override
   bool get debugMode => true;
-
-  late TextComponent temperature;
 
   @override
   Future<FutureOr<void>> onLoad() async {
     add(Player());
-    add(IceRockSpawner());
-    temperature = TextComponent(text: 'temperatur: $sliderValue', position: Vector2(20, 20));
-    add(temperature);
-    add(
-      KeyboardListenerComponent(
-        keyDown: {
-          LogicalKeyboardKey.keyW: (_) {
-            sliderValue += 1;
-            return false;
-          },
-          LogicalKeyboardKey.keyS: (_) {
-            sliderValue -= 1;
-            return false;
-          },
-        },
-      ),
-    );
+    heatProgressTimer.onTick = onTick;
   }
 
   @override
   void update(double dt) {
-    temperature.text = 'temperature $sliderValue';
+    heatProgressTimer.update(dt);
     super.update(dt);
   }
 
-  @override
-  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    final isKeyDown = event is RawKeyDownEvent;
-    if (isKeyDown && keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
-      sliderValue += 1;
+  void onTick() {
+    if (tempState == TemperatureState.isIncreasing) {
+      final tmpSliderValue = sliderValue + 0.1;
+
+      sliderValue = ((tmpSliderValue * 10).round() / 10);
+    } else if (tempState == TemperatureState.isDecreasing) {
+      final tmpSliderValue = sliderValue - 0.1;
+      sliderValue = ((tmpSliderValue * 10).round() / 10);
     }
-    if (isKeyDown && keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
-      sliderValue -= 1;
-    }
-    return KeyEventResult.ignored;
   }
 }
