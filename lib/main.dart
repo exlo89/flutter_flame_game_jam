@@ -56,7 +56,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   } else {
                     setState(() {
-                      child = GameWidget(game: GameMain());
+                      child = GameWidget(
+                        game: GameMain(),
+                        overlayBuilderMap: {
+                          'sliderOverlay':
+                              (BuildContext context, GameMain game) {
+                            return Slider(
+                              value: game.sliderValue,
+                              min: 0,
+                              max: 100,
+                              onChanged: (double newValue) {
+                                setState(() {
+                                  game.sliderValue = newValue;
+                                });
+                              },
+                            );
+                          },
+                        },
+                        initialActiveOverlays: ['sliderOverlay'],
+                      );
                       gameIsRunning = true;
                     });
                   }
