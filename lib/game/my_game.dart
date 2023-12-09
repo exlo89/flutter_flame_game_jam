@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_flame_game_jam/game/components/background.dart';
 import 'package:flutter_flame_game_jam/game/components/hot_cold_button.dart';
 import 'package:flutter_flame_game_jam/game/components/hud.dart';
@@ -21,37 +18,38 @@ class MyGame extends FlameGame with HasCollisionDetection {
             IceRockSpawner(),
             HotColdButton(),
             Hud(),
+            Player(),
           ],
         );
 
-  double sliderValue = 0;
+  double temperature = 0;
+  double maxTemperature = 10;
+  double minTemperature = -10;
 
-  TemperatureState tempState = TemperatureState.isIncreasing;
-  Timer heatProgressTimer = Timer(0.1, repeat: true, autoStart: false);
+  TemperatureState temperatureState = TemperatureState.isIncreasing;
+  late Timer temperatureTimer = Timer(0.1, repeat: true, autoStart: false, onTick: onTick);
 
   @override
   bool get debugMode => true;
 
   @override
-  Future<FutureOr<void>> onLoad() async {
-    add(Player());
-    heatProgressTimer.onTick = onTick;
-  }
-
-  @override
   void update(double dt) {
-    heatProgressTimer.update(dt);
+    temperatureTimer.update(dt);
     super.update(dt);
   }
 
   void onTick() {
-    if (tempState == TemperatureState.isIncreasing) {
-      final tmpSliderValue = sliderValue + 0.1;
-
-      sliderValue = ((tmpSliderValue * 10).round() / 10);
-    } else if (tempState == TemperatureState.isDecreasing) {
-      final tmpSliderValue = sliderValue - 0.1;
-      sliderValue = ((tmpSliderValue * 10).round() / 10);
+    // increase temperature and stop if has reached maximum
+    if (temperatureState == TemperatureState.isIncreasing && temperature <= maxTemperature) {
+      temperature = _roundTemperature(temperature + 0.1);
     }
+    // decrease temperature and stop if has reached minimum
+    if (temperatureState == TemperatureState.isDecreasing && temperature >= minTemperature) {
+      temperature = _roundTemperature(temperature - 0.1);
+    }
+  }
+
+  double _roundTemperature(double value) {
+    return ((value * 10).round() / 10);
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flame/cache.dart';
 import 'package:flame/components.dart' as comp;
 import 'package:flame/events.dart';
 import 'package:flame/input.dart';
@@ -28,16 +27,17 @@ class HotColdButton extends SpriteButtonComponent with comp.HasGameRef<MyGame> {
   @override
   Future<void> onTapDown(TapDownEvent _) async {
     super.onTapDown(_);
-    print(game.tempState);
 
     // button =
     // buttonDown =
     sprites = {
-      ButtonState.down: game.tempState == TemperatureState.isIncreasing ? coldButtonIsPressed : hotButtonIsPressed,
-      ButtonState.up: game.tempState != TemperatureState.isIncreasing ? coldButton : hotButton,
+      ButtonState.down:
+          game.temperatureState == TemperatureState.isIncreasing ? coldButtonIsPressed : hotButtonIsPressed,
+      ButtonState.up: game.temperatureState != TemperatureState.isIncreasing ? coldButton : hotButton,
     };
-    game.tempState =
-        game.tempState == TemperatureState.isIncreasing ? TemperatureState.isDecreasing : TemperatureState.isIncreasing;
-    game.heatProgressTimer.start();
+    game.temperatureState = game.temperatureState == TemperatureState.isIncreasing
+        ? TemperatureState.isDecreasing
+        : TemperatureState.isIncreasing;
+    game.temperatureTimer.start();
   }
 }

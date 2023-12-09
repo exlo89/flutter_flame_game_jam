@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_flame_game_jam/game/components/ice_rock.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
 class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
@@ -12,11 +10,9 @@ class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
           scale: Vector2.all(5),
           anchor: Anchor.center,
         );
-  double multiplier = 6;
 
   @override
   Future<FutureOr<void>> onLoad() async {
-    await super.onLoad();
     animation = await gameRef.loadSpriteAnimation(
       'player.png',
       SpriteAnimationData.sequenced(

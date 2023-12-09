@@ -14,8 +14,13 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
 
   static const _speed = 120;
 
+  late Sprite fogSprite;
+  late Sprite iceSprite;
+
   @override
   Future<FutureOr<void>> onLoad() async {
+    iceSprite = await Sprite.load('ice_rock.png');
+    fogSprite = await Sprite.load('fog_cloud.png');
     sprite = await Sprite.load('ice_rock.png');
     add(
       RectangleHitbox.relative(
@@ -29,7 +34,11 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
   void update(double dt) {
     super.update(dt);
 
-    if (gameRef.sliderValue > 2) {}
+    if (gameRef.temperature > 2) {
+      sprite = fogSprite;
+    } else {
+      sprite = iceSprite;
+    }
 
     position.x -= _speed * dt;
 
@@ -41,7 +50,7 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Player) {
+    if (other is Player && gameRef.temperature <= 2) {
       other.removeFromParent();
     }
   }

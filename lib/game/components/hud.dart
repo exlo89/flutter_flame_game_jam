@@ -19,7 +19,7 @@ class Hud extends PositionComponent with HasGameRef<MyGame> {
   Future<void> onLoad() async {
     debugMode = true;
     _scoreTextComponent = TextComponent(
-      text: '${game.sliderValue}',
+      text: '${game.temperature}',
       textRenderer: TextPaint(
         style: const TextStyle(
           fontSize: 32,
@@ -34,6 +34,6 @@ class Hud extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
-    _scoreTextComponent.text = 'Temperatur: ${game.sliderValue.toString()}';
+    _scoreTextComponent.text = 'Temperatur: ${game.temperature.toString()}';
   }
 }
