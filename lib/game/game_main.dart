@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flame_game_jam/game/components/HotColdButton.dart';
+import 'package:flutter_flame_game_jam/game/components/hot_cold_button.dart';
+import 'package:flutter_flame_game_jam/game/components/background.dart';
 import 'package:flutter_flame_game_jam/game/components/player.dart';
-import 'package:flutter_flame_game_jam/game/levels/level.dart';
 
 import 'components/hud.dart';
 

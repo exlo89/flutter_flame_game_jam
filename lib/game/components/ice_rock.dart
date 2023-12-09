@@ -29,9 +29,7 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
   void update(double dt) {
     super.update(dt);
 
-    if (gameRef.sliderValue > 2) {
-      sprite = 
-    }
+    if (gameRef.sliderValue > 2) {}
 
     position.x -= _speed * dt;
 
