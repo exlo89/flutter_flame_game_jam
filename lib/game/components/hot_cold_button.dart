@@ -21,8 +21,8 @@ class HotColdButton extends SpriteButtonComponent with comp.HasGameRef<MyGame> {
 
     anchor = comp.Anchor.bottomCenter;
     position = Vector2(game.size.x / 2, game.size.y - 60);
-    button = await game.loadSprite('button/blue_button_default.png');
-    buttonDown = await game.loadSprite('button/blue_button_pressed.png');
+    button = hotButton;
+    buttonDown = hotButtonIsPressed;
   }
 
   @override

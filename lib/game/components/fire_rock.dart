@@ -2,13 +2,12 @@ import 'dart:async' as asy;
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-
 import 'package:flutter_flame_game_jam/game/components/player.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
-class IceRock extends SpriteComponent
+class FireRock extends SpriteComponent
     with HasGameRef<MyGame>, CollisionCallbacks {
-  IceRock({super.position})
+  FireRock({super.position})
       : super(
           scale: Vector2.all(0.2),
           anchor: Anchor.center,
@@ -18,13 +17,14 @@ class IceRock extends SpriteComponent
 
   bool hasCollision = true;
   late Sprite fogSprite;
-  late Sprite iceSprite;
+  late Sprite fireSprite;
+  late Timer removeTimer = Timer(2, onTick: () => removeFromParent());
 
   @override
   Future<asy.FutureOr<void>> onLoad() async {
-    iceSprite = await Sprite.load('ice_rock.png');
+    fireSprite = await Sprite.load('fire_rock.png');
     fogSprite = await Sprite.load('fog_cloud.png');
-    sprite = iceSprite;
+    sprite = fireSprite;
     add(
       RectangleHitbox.relative(
         Vector2(0.8, 0.8),
@@ -37,7 +37,7 @@ class IceRock extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
-    if (gameRef.temperature > 1) {
+    if (gameRef.temperature < -1) {
       sprite = fogSprite;
       hasCollision = false;
       asy.Timer.periodic(const Duration(seconds: 2), (timer) {

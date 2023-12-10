@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter_flame_game_jam/game/components/fire_rock.dart';
 import 'package:flutter_flame_game_jam/game/components/ice_rock.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
@@ -46,6 +47,14 @@ class Player extends SpriteAnimationComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is IceRock && other.hasCollision) {
+      if (lives > 1) {
+        lives -= 1;
+      } else {
+        gameRef.gameOver();
+      }
+    }
+
+    if (other is FireRock && other.hasCollision) {
       if (lives > 1) {
         lives -= 1;
       } else {
