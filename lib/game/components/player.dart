@@ -2,14 +2,18 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter_flame_game_jam/game/components/ice_rock.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
+class Player extends SpriteAnimationComponent
+    with HasGameRef<MyGame>, CollisionCallbacks {
   Player()
       : super(
           scale: Vector2.all(5),
           anchor: Anchor.center,
         );
+
+  int lives = 3;
 
   @override
   Future<FutureOr<void>> onLoad() async {
@@ -35,5 +39,18 @@ class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
     position = Vector2((gameRef.size.y / 100) * 20, game.size.y / 3 * 2);
     scale = Vector2.all(gameRef.size.y / 100);
     super.update(dt);
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is IceRock && other.hasCollision) {
+      if (lives > 1) {
+        lives -= 1;
+      } else {
+        gameRef.gameOver();
+      }
+    }
   }
 }

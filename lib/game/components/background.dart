@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
 class Background extends ParallaxComponent<MyGame> with HasGameRef<MyGame> {
+  Vector2 initVelocity = Vector2(10, 0);
   @override
   Future<FutureOr<void>> onLoad() async {
     parallax = await game.loadParallax(
@@ -17,7 +18,7 @@ class Background extends ParallaxComponent<MyGame> with HasGameRef<MyGame> {
         ParallaxImageData('background/clouds_mg_2.png'),
         ParallaxImageData('background/clouds_mg_1.png'),
       ],
-      baseVelocity: Vector2(10, 0),
+      baseVelocity: initVelocity,
       velocityMultiplierDelta: Vector2(1.5, 0),
     );
   }

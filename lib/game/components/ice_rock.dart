@@ -5,7 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flutter_flame_game_jam/game/components/player.dart';
 import 'package:flutter_flame_game_jam/game/my_game.dart';
 
-class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks {
+class IceRock extends SpriteComponent
+    with HasGameRef<MyGame>, CollisionCallbacks {
   IceRock({super.position})
       : super(
           scale: Vector2.all(0.2),
@@ -14,6 +15,7 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
 
   static const _speed = 120;
 
+  bool hasCollision = true;
   late Sprite fogSprite;
   late Sprite iceSprite;
 
@@ -36,8 +38,10 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
 
     if (gameRef.temperature > 2) {
       sprite = fogSprite;
+      hasCollision = false;
     } else {
       sprite = iceSprite;
+      hasCollision = true;
     }
 
     position.y = game.size.y / 3 * 2;
@@ -50,29 +54,11 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
   }
 
   @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Player && gameRef.temperature <= 2) {
-      other.removeFromParent();
+    if (other is Player && hasCollision) {
       removeFromParent();
     }
-  }
-}
-
-class IceRockSpawner extends TimerComponent with HasGameRef<MyGame> {
-  IceRockSpawner()
-      : super(
-          period: 2,
-          repeat: true,
-          autoStart: true,
-        );
-
-  @override
-  void onTick() {
-    gameRef.add(
-      IceRock(
-        position: Vector2(game.size.x, game.size.y / 3 * 2),
-      ),
-    );
   }
 }
