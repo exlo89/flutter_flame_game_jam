@@ -40,7 +40,9 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
       sprite = iceSprite;
     }
 
+    position.y = game.size.y / 3 * 2;
     position.x -= _speed * dt;
+    scale = Vector2.all((gameRef.size.y / 100) * 0.03);
 
     if (position.x < 0) {
       removeFromParent();
@@ -52,6 +54,7 @@ class IceRock extends SpriteComponent with HasGameRef<MyGame>, CollisionCallback
     super.onCollisionStart(intersectionPoints, other);
     if (other is Player && gameRef.temperature <= 2) {
       other.removeFromParent();
+      removeFromParent();
     }
   }
 }

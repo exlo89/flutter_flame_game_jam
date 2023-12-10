@@ -19,7 +19,7 @@ class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
         amount: 4,
         stepTime: 0.1,
         textureSize: Vector2(16, 24),
-        texturePosition: Vector2(0, 48),
+        texturePosition: Vector2(0, 49),
       ),
     );
     add(
@@ -32,7 +32,8 @@ class Player extends SpriteAnimationComponent with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
-    position = Vector2(100, game.size.y / 3 * 2);
+    position = Vector2((gameRef.size.y / 100) * 20, game.size.y / 3 * 2);
+    scale = Vector2.all(gameRef.size.y / 100);
     super.update(dt);
   }
 }

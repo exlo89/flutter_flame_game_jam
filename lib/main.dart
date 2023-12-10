@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Widget child = const SizedBox();
+  Widget child = const SizedBox.shrink();
   bool gameIsRunning = false;
   @override
   Widget build(BuildContext context) {
@@ -41,16 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
+        width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                ),
-                child: child,
-              ),
+              child: child,
             ),
             const SizedBox(height: 20),
             FilledButton(
@@ -63,7 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   } else {
                     setState(() {
-                      child = GameWidget(game: MyGame());
+                      child = Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                        ),
+                        child: GameWidget(game: MyGame()),
+                      );
                       gameIsRunning = true;
                     });
                   }

@@ -8,32 +8,29 @@ class Hud extends PositionComponent with HasGameRef<MyGame> {
     super.size,
     super.scale,
     super.angle,
-    super.anchor,
     super.children,
     super.priority = 5,
-  });
+  }) : super(
+          anchor: Anchor.topCenter,
+        );
 
   late TextComponent _scoreTextComponent;
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
+    position = Vector2(gameRef.size.x / 2, gameRef.size.y / 2);
     _scoreTextComponent = TextComponent(
       text: '${game.temperature}',
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 32,
-          color: Color.fromRGBO(10, 10, 10, 1),
-        ),
-      ),
       anchor: Anchor.center,
-      position: Vector2(game.size.x / 2, 0 + 60),
+      scale: Vector2.all(0.4),
     );
     add(_scoreTextComponent);
   }
 
   @override
   void update(double dt) {
+    scale = Vector2.all((gameRef.size.y / 100) * 0.4);
+    position = Vector2(gameRef.size.x / 2, (gameRef.size.y / 100) * 10);
     _scoreTextComponent.text = 'Temperatur: ${game.temperature.toString()}';
   }
 }

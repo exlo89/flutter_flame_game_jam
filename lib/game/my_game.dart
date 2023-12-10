@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_flame_game_jam/game/components/background.dart';
 import 'package:flutter_flame_game_jam/game/components/hot_cold_button.dart';
 import 'package:flutter_flame_game_jam/game/components/hud.dart';
@@ -15,7 +14,7 @@ class MyGame extends FlameGame with HasCollisionDetection {
       : super(
           children: [
             Background(),
-            IceRockSpawner(),
+            //IceRockSpawner(),
             HotColdButton(),
             Hud(),
             Player(),
@@ -33,8 +32,16 @@ class MyGame extends FlameGame with HasCollisionDetection {
   bool get debugMode => true;
 
   @override
+  Color backgroundColor() {
+    return Colors.transparent;
+  }
+
+  @override
   void update(double dt) {
     temperatureTimer.update(dt);
+    if (temperature > 10 || temperature < -10) {
+      print('death');
+    }
     super.update(dt);
   }
 
